@@ -1,0 +1,26 @@
+{
+  "name": "web-scraper",
+  "version": "1.0.0",
+  "description": "example of a web scraper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aBOBination/web-scraper.git"
+  },
+  "author": "Robert Marks",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aBOBination/web-scraper/issues"
+  },
+  "homepage": "https://github.com/aBOBination/web-scraper#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cheerio": "^1.0.0-rc.3",
+    "express": "^4.17.1",
+    "express-handlebars": "^4.0.4",
+    "mongoose": "^5.9.20"
+  }
+}
