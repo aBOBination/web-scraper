@@ -1,0 +1,21 @@
+{{!-- <div data-_id="5efa8f1b1b22d50015a54cf7" class="card">
+  <div class="card-header">
+    <h3>
+      <a class="article-link" target="_blank" rel="noopener noreferrer" href="https://www.nytimes.com/2020/06/29/us/derek-chauvin-court-hearing.html">In Court, Derek Chauvin’s Lawyers Say Officials Have Biased the CaseThe Nearly 70 ‘I Can’t Breathe’ Deaths You Never Heard AboutMore than a month since protests began, the question looms: Now what?</a>
+      <a class="btn btn-success save">Save Article</a>
+    </h3>
+  </div>
+  <div class="card-body">The Minneapolis police chief recently described George Floyd’s death as murder. Lawyers for the four officers charged in the case say that may have biased potential jurors.The deaths of Eric Garner in New York and George Floyd in Minnesota created national outrage over the use of deadly police restraints. There were many others you didn’t hear about.</div>
+</div> --}}
+
+{{#each scrape}}
+  <div data-_id="" class="card">
+  <div class="card-header">
+    <h3>
+      <a class="article-link" target="_blank" rel="noopener noreferrer" href="{{link}}">{{title}}</a>
+      <a class="btn btn-success save">Save Article</a>
+    </h3>
+  </div>
+  <div class="card-body">{{title}}</div>
+</div>
+{{/each}}
