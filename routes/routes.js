@@ -16,7 +16,7 @@ router.get('/', function (req, res) {
     $('.css-6p6lnl').each(function (i, element) {
       // Save an empty result object
       var result = {};
-
+      console.log($(this).children('a'));
       // Add the text and href of every link, and save them as properties of the result object
       result.title = $(this).children('a').text();
       result.link = $(this).children('a').attr('href');
