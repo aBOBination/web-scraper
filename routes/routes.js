@@ -5,6 +5,10 @@ var db = require('../models');
 var router = express.Router();
 
 router.get('/', function (req, res) {
+  res.render('index');
+});
+
+router.get('/api/fetch', function (req, res) {
   // First, we grab the body of the html with axios
 
   axios.get('https://www.nytimes.com/').then(function (response) {
@@ -16,21 +20,30 @@ router.get('/', function (req, res) {
     $('.css-6p6lnl').each(function (i, element) {
       // Save an empty result object
       var result = {};
-      console.log($(this).children('a'));
       // Add the text and href of every link, and save them as properties of the result object
       result.title = $(this).children('a').text();
       result.link = $(this).children('a').attr('href');
 
-      // Create a new Article using the `result` object built from scraping
-      db.Article.create(result)
-        .then(function (dbArticle) {
-          // View the added result in the console
-          // console.log(dbArticle);
+      db.Article.distinct('link', { link: result.link })
+        .then(function (data) {
+          console.log(data);
+
+          db.Article.create(result)
+            .then(function (dbArticle) {
+              // View the added result in the console
+              // console.log(dbArticle);
+            })
+            .catch(function (err) {
+              // If an error occurred, log it
+              console.log(err);
+            });
         })
         .catch(function (err) {
-          // If an error occurred, log it
           console.log(err);
         });
+
+      // Create a new Article using the `result` object built from scraping
+
       results.push(result);
     });
 
@@ -39,44 +52,53 @@ router.get('/', function (req, res) {
     var data = {
       scrape: results
     };
-    console.log(data);
     res.render('index', data);
   });
 });
 
-// A GET route for scraping the echoJS website
-router.get('/api/fetch', function (req, res) {
-  // First, we grab the body of the html with axios
-  axios.get('https://www.nytimes.com/').then(function (response) {
-    // Then, we load that into cheerio and save it to $ for a shorthand selector
-
-    var $ = cheerio.load(response.data);
-
-    // Now, we grab every h2 within an article tag, and do the following:
-    $('.css-6p6lnl').each(function (i, element) {
-      // Save an empty result object
-      var result = {};
-
-      // Add the text and href of every link, and save them as properties of the result object
-      result.title = $(this).children('a').text();
-      result.link = $(this).children('a').attr('href');
-
-      // Create a new Article using the `result` object built from scraping
-      db.Article.create(result)
-        .then(function (dbArticle) {
-          // View the added result in the console
-          // console.log(dbArticle);
-        })
-        .catch(function (err) {
-          // If an error occurred, log it
-          console.log(err);
-        });
+router.get('/api/headlines', function (req, res) {
+  db.Article.find({ saved: false })
+    .then(function (data) {
+      res.json(data);
+    })
+    .catch(function (err) {
+      console.log(err);
     });
-
-    // Send a message to the client
-    res.send('Scrape Complete');
-  });
 });
+
+// // A GET route for scraping the echoJS website
+// router.get('/api/fetch', function (req, res) {
+//   // First, we grab the body of the html with axios
+//   axios.get('https://www.nytimes.com/').then(function (response) {
+//     // Then, we load that into cheerio and save it to $ for a shorthand selector
+
+//     var $ = cheerio.load(response.data);
+
+//     // Now, we grab every h2 within an article tag, and do the following:
+//     $('.css-6p6lnl').each(function (i, element) {
+//       // Save an empty result object
+//       var result = {};
+
+//       // Add the text and href of every link, and save them as properties of the result object
+//       result.title = $(this).children('a').text();
+//       result.link = $(this).children('a').attr('href');
+
+//       // Create a new Article using the `result` object built from scraping
+//       db.Article.create(result)
+//         .then(function (dbArticle) {
+//           // View the added result in the console
+//           // console.log(dbArticle);
+//         })
+//         .catch(function (err) {
+//           // If an error occurred, log it
+//           console.log(err);
+//         });
+//     });
+
+//     // Send a message to the client
+//     res.send('Scrape Complete');
+//   });
+// });
 
 // Route for getting all Articles from the db
 router.get('/articles', function (req, res) {

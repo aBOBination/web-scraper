@@ -10,7 +10,8 @@ $(document).ready(function () {
 
   function initPage() {
     // Run an AJAX request for any unsaved headlines
-    $.get('/api/headlines?saved=false').then(function (data) {
+    $.get('/api/headlines').then(function (data) {
+      console.log(data);
       articleContainer.empty();
       // If we have headlines, render them to the page
       if (data && data.length) {
@@ -44,8 +45,8 @@ $(document).ready(function () {
     var cardHeader = $("<div class='card-header'>").append(
       $('<h3>').append(
         $("<a class='article-link' target='_blank' rel='noopener noreferrer'>")
-          .attr('href', article.url)
-          .text(article.headline),
+          .attr('href', article.link)
+          .text(article.title),
         $("<a class='btn btn-success save'>Save Article</a>")
       )
     );
