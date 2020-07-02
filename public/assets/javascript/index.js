@@ -11,7 +11,6 @@ $(document).ready(function () {
   function initPage() {
     // Run an AJAX request for any unsaved headlines
     $.get('/api/headlines').then(function (data) {
-      console.log(data);
       articleContainer.empty();
       // If we have headlines, render them to the page
       if (data && data.length) {
@@ -38,6 +37,7 @@ $(document).ready(function () {
   }
 
   function createCard(article) {
+    console.log(article);
     // This function takes in a single JSON object for an article/headline
     // It constructs a jQuery element containing all of the formatted HTML for the
     // article card
