@@ -15,6 +15,17 @@ router.get('/', function (req, res) {
   });
 });
 
+router.get('/saved', function (req, res) {
+  db.Article.find({ saved: true }).then(function (results) {
+    // var data = {
+    //   scrape: results.map((row) => {
+    //     return { title: row.title, link: row.link };
+    //   })
+    // };
+    res.json(results);
+  });
+});
+
 router.get('/api/fetch', function (req, res) {
   axios.get('https://www.nytimes.com/').then(function (response) {
     var $ = cheerio.load(response.data);
@@ -44,6 +55,7 @@ router.get('/api/fetch', function (req, res) {
     var data = {
       scrape: results
     };
+    console.log(data);
     res.render('index', data);
   });
 });
@@ -59,8 +71,24 @@ router.get('/api/headlines', function (req, res) {
 });
 
 router.delete('/api/clear', function (req, res) {
-  // TODO: Finish the route so it grabs all of the articles
   db.Article.remove({})
+    .then(function (dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+});
+
+router.put('/api/headlines/:id', function (req, res) {
+  console.log(req);
+  const id = req.params.id;
+  const payload = {
+    saved: true
+  };
+  console.log(id);
+  console.log(payload);
+  db.Article.updateOne({ _id: id }, { $set: payload })
     .then(function (dbArticle) {
       res.json(dbArticle);
     })
