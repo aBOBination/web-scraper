@@ -8,7 +8,12 @@ router.get('/', function (req, res) {
   db.Article.find({ saved: false }).then(function (results) {
     var data = {
       scrape: results.map((row) => {
-        return { _id: row._id, title: row.title, link: row.link };
+        return {
+          _id: row._id,
+          title: row.title,
+          link: row.link,
+          summary: row.summary
+        };
       })
     };
     res.render('index', data);
@@ -19,7 +24,12 @@ router.get('/saved', function (req, res) {
   db.Article.find({ saved: true }).then(function (results) {
     var data = {
       scrape: results.map((row) => {
-        return { _id: row._id, title: row.title, link: row.link };
+        return {
+          _id: row._id,
+          title: row.title,
+          link: row.link,
+          summary: row.summary
+        };
       })
     };
     res.render('saved', data);
@@ -32,8 +42,15 @@ router.get('/api/fetch', function (req, res) {
     var results = [];
     $('.css-6p6lnl').each(function (i, element) {
       var result = {};
-      result.title = $(this).children('a').text();
+      console.log('---start--');
+      // console.log($(this).html());
+      console.log($(this).children('a').find('.e1voiwgp0').text());
+      console.log($(this).children('a').find('.e18df3gd0').text());
+      console.log($(this).children('a').find('p').text());
+      console.log('---end---');
+      result.title = $(this).children('a').find('.e1voiwgp0').text();
       result.link = $(this).children('a').attr('href');
+      result.summary = $(this).children('a').find('p').text();
       db.Article.find({ link: result.link })
         .then(function (data) {
           if (data.length === 0) {
@@ -68,7 +85,7 @@ router.get('/api/headlines', function (req, res) {
 });
 
 router.delete('/api/clear', function (req, res) {
-  db.Article.remove({})
+  db.Article.remove({ saved: false })
     .then(function (dbArticle) {
       res.json(dbArticle);
     })

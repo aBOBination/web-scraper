@@ -37,7 +37,7 @@ $(document).ready(function () {
         $("<a class='btn btn-success save'>Save Article</a>")
       )
     );
-    var cardBody = $("<div class='card-body'>").text(article.title);
+    var cardBody = $("<div class='card-body'>").text(article.summary);
     card.append(cardHeader, cardBody);
     card.data('_id', article._id);
     return card;

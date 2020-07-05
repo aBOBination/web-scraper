@@ -9,7 +9,10 @@
       <a class="btn btn-success save">Save Article</a>
     </h3>
   </div>
-  <div class="card-body">{{title}}</div>
+  {{#if summary}}
+  <div class="card-body">{{summary}}</div>
+  {{else}}
+  {{/if}}
 </div>
 {{/each}}
 
