@@ -60,9 +60,9 @@ router.get('/api/headlines', function (req, res) {
 
 router.delete('/api/clear', function (req, res) {
   // TODO: Finish the route so it grabs all of the articles
-  db.Article.remove({ saved: false })
+  db.Article.remove({})
     .then(function (dbArticle) {
-      // res.json(dbArticle);
+      res.json(dbArticle);
     })
     .catch(function (err) {
       console.log(err);

@@ -10,13 +10,18 @@ $(document).ready(function () {
 
   function initPage() {
     // Run an AJAX request for any unsaved headlines
-    $.get('/api/headlines').then(function (data) {
+    $.ajax({
+      method: 'GET',
+      url: 'api/headlines'
+    }).then(function (data) {
       articleContainer.empty();
       // If we have headlines, render them to the page
       if (data && data.length) {
+        console.log('render');
         renderArticles(data);
       } else {
         // Otherwise render a message explaining we have no articles
+        console.log('render empty');
         renderEmpty();
       }
     });
@@ -51,7 +56,7 @@ $(document).ready(function () {
       )
     );
 
-    var cardBody = $("<div class='card-body'>").text(article.summary);
+    var cardBody = $("<div class='card-body'>").text(article.title);
 
     card.append(cardHeader, cardBody);
     // We attach the article's id to the jQuery element
@@ -120,7 +125,10 @@ $(document).ready(function () {
   }
 
   function handleArticleClear() {
-    $.get('api/clear').then(function () {
+    $.ajax({
+      method: 'DELETE',
+      url: 'api/clear'
+    }).then(function () {
       articleContainer.empty();
       initPage();
     });
