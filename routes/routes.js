@@ -5,10 +5,10 @@ var db = require('../models');
 var router = express.Router();
 
 router.get('/', function (req, res) {
-  db.Article.find({}).then(function (results) {
+  db.Article.find({ saved: false }).then(function (results) {
     var data = {
       scrape: results.map((row) => {
-        return { title: row.title, link: row.link };
+        return { _id: row._id, title: row.title, link: row.link };
       })
     };
     res.render('index', data);
@@ -17,12 +17,12 @@ router.get('/', function (req, res) {
 
 router.get('/saved', function (req, res) {
   db.Article.find({ saved: true }).then(function (results) {
-    // var data = {
-    //   scrape: results.map((row) => {
-    //     return { title: row.title, link: row.link };
-    //   })
-    // };
-    res.json(results);
+    var data = {
+      scrape: results.map((row) => {
+        return { _id: row._id, title: row.title, link: row.link };
+      })
+    };
+    res.render('saved', data);
   });
 });
 
@@ -38,9 +38,7 @@ router.get('/api/fetch', function (req, res) {
         .then(function (data) {
           if (data.length === 0) {
             db.Article.create(result)
-              .then(function () {
-                // results.push(result);
-              })
+              .then(function () {})
               .catch(function (err) {
                 console.log(err);
               });
@@ -55,7 +53,6 @@ router.get('/api/fetch', function (req, res) {
     var data = {
       scrape: results
     };
-    console.log(data);
     res.render('index', data);
   });
 });
@@ -80,14 +77,25 @@ router.delete('/api/clear', function (req, res) {
     });
 });
 
+router.delete('/api/clear/:id', function (req, res) {
+  console.log(req.params.id);
+  const id = req.params.id;
+
+  db.Article.deleteOne({ _id: id })
+    .then(function (dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+});
+
 router.put('/api/headlines/:id', function (req, res) {
   console.log(req);
   const id = req.params.id;
   const payload = {
     saved: true
   };
-  console.log(id);
-  console.log(payload);
   db.Article.updateOne({ _id: id }, { $set: payload })
     .then(function (dbArticle) {
       res.json(dbArticle);

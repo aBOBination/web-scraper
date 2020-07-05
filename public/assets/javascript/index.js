@@ -3,6 +3,7 @@ $(document).ready(function () {
   $(document).on('click', '.btn.save', handleArticleSave);
   $(document).on('click', '.scrape-new', handleArticleScrape);
   $('.clear').on('click', handleArticleClear);
+  $('.delete').on('click', handleSaveDelete);
 
   function initPage() {
     $.ajax({
@@ -11,10 +12,8 @@ $(document).ready(function () {
     }).then(function (data) {
       articleContainer.empty();
       if (data && data.length) {
-        console.log('render');
         renderArticles(data);
       } else {
-        console.log('render empty');
         renderEmpty();
       }
     });
@@ -29,8 +28,7 @@ $(document).ready(function () {
   }
 
   function createCard(article) {
-    console.log(article);
-    var card = $("<div class='card'>");
+    var card = $("<div class='card'>").attr('data-_id', article._id);
     var cardHeader = $("<div class='card-header'>").append(
       $('<h3>').append(
         $("<a class='article-link' target='_blank' rel='noopener noreferrer'>")
@@ -71,12 +69,10 @@ $(document).ready(function () {
     // When we rendered the article initially, we attached a javascript object containing the headline id
     // to the element using the .data method. Here we retrieve that.
     var articleToSave = $(this).parents('.card').data();
-    console.log(articleToSave);
     // Remove card from page
     $(this).parents('.card').remove();
 
     articleToSave.saved = true;
-    console.log(articleToSave);
     // Using a patch method to be semantic since this is an update to an existing record in our collection
     $.ajax({
       method: 'PUT',
@@ -104,6 +100,19 @@ $(document).ready(function () {
     }).then(function () {
       articleContainer.empty();
       initPage();
+    });
+  }
+
+  function handleSaveDelete() {
+    var articleToDelete = $(this).parents('.card').data();
+    // Remove card from page
+    $(this).parents('.card').remove();
+    $.ajax({
+      method: 'DELETE',
+      url: '/api/clear/' + articleToDelete._id
+    }).then(function () {
+      // articleContainer.empty();
+      // initPage();
     });
   }
 });
