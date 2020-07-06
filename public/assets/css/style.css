@@ -94,14 +94,14 @@ body {
 
 .save {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 12px;
+  right: 12px;
 }
 
 .delete {
   position: absolute;
-  top: 20;
-  right: 20px;
+  top: 12;
+  right: 12px;
 }
 
 .notes {
