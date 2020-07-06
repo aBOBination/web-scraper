@@ -42,12 +42,6 @@ router.get('/api/fetch', function (req, res) {
     var results = [];
     $('.css-6p6lnl').each(function (i, element) {
       var result = {};
-      console.log('---start--');
-      // console.log($(this).html());
-      console.log($(this).children('a').find('.e1voiwgp0').text());
-      console.log($(this).children('a').find('.e18df3gd0').text());
-      console.log($(this).children('a').find('p').text());
-      console.log('---end---');
       result.title = $(this).children('a').find('.e1voiwgp0').text();
       result.link = $(this).children('a').attr('href');
       result.summary = $(this).children('a').find('p').text();
@@ -85,7 +79,7 @@ router.get('/api/headlines', function (req, res) {
 });
 
 router.delete('/api/clear', function (req, res) {
-  db.Article.remove({ saved: false })
+  db.Article.deleteMany({ saved: false })
     .then(function (dbArticle) {
       res.json(dbArticle);
     })
@@ -95,9 +89,7 @@ router.delete('/api/clear', function (req, res) {
 });
 
 router.delete('/api/clear/:id', function (req, res) {
-  console.log(req.params.id);
   const id = req.params.id;
-
   db.Article.deleteOne({ _id: id })
     .then(function (dbArticle) {
       res.json(dbArticle);
@@ -108,7 +100,6 @@ router.delete('/api/clear/:id', function (req, res) {
 });
 
 router.put('/api/headlines/:id', function (req, res) {
-  console.log(req);
   const id = req.params.id;
   const payload = {
     saved: true
