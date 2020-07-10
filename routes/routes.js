@@ -24,19 +24,22 @@ router.get('/', function (req, res) {
 });
 
 router.get('/saved', function (req, res) {
-  db.Article.find({ saved: true }).then(function (results) {
-    var data = {
-      scrape: results.map((row) => {
-        return {
-          _id: row._id,
-          title: row.title,
-          link: row.link,
-          summary: row.summary
-        };
-      })
-    };
-    res.render('saved', data);
-  });
+  db.Article.find({ saved: true })
+    .populate('note')
+    .then(function (results) {
+      console.log(results);
+      var data = {
+        scrape: results.map((row) => {
+          return {
+            _id: row._id,
+            title: row.title,
+            link: row.link,
+            summary: row.summary
+          };
+        })
+      };
+      res.render('saved', data);
+    });
 });
 
 router.get('/api/fetch', function (req, res) {
@@ -144,28 +147,6 @@ router.post('/api/notes', function (req, res) {
       // If an error occurred, send it to the client
       res.json(err);
     });
-
-  // db.Article.updateOne({ _id: id }, { $push: { Note: payload } })
-  //   .then(function (dbArticle) {
-  //     console.log('success');
-  //     console.log(dbArticle);
-  //   })
-  //   .catch(function (err) {
-  //     console.log(err);
-  //   });
-
-  // db.Article.findOne({ _id: id })
-  //   .populate('note')
-  //   .exec((err, payload) => {
-  //     payload;
-  //     console.log('Populated Note ' + payload);
-  //   });
-
-  // db.Note.create(payload)
-  //   .then(function () {})
-  //   .catch(function (err) {
-  //     console.log(err);
-  //   });
 });
 
 module.exports = router;
