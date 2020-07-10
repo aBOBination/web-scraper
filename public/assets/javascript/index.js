@@ -4,6 +4,7 @@ $(document).ready(function () {
   $(document).on('click', '.scrape-new', handleArticleScrape);
   $('.clear').on('click', handleArticleClear);
   $('.delete').on('click', handleSaveDelete);
+  $('.add').on('click', handleAddNote);
 
   function initPage() {
     $.ajax({
@@ -110,5 +111,24 @@ $(document).ready(function () {
       method: 'DELETE',
       url: '/api/clear/' + articleToDelete._id
     }).then(function () {});
+  }
+
+  function handleAddNote() {
+    const message = $('#addNoteInput').val();
+    const id = $(this).attr('id');
+    const payload = {
+      id: id,
+      title: 'test',
+      body: message
+    };
+    console.log(payload);
+
+    $.ajax({
+      method: 'POST',
+      url: '/api/notes',
+      data: payload
+    }).then(function () {
+      console.log('note created');
+    });
   }
 });

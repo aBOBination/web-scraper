@@ -1,7 +1,10 @@
 var express = require('express');
+var mongoose = require('mongoose');
+
 var axios = require('axios');
 var cheerio = require('cheerio');
 var db = require('../models');
+const { json } = require('express');
 var router = express.Router();
 
 router.get('/', function (req, res) {
@@ -111,6 +114,58 @@ router.put('/api/headlines/:id', function (req, res) {
     .catch(function (err) {
       console.log(err);
     });
+});
+
+router.post('/api/notes', function (req, res) {
+  const id = mongoose.Types.ObjectId(req.body.id);
+  const title = req.body.title;
+  const body = req.body.body;
+  const payload = {
+    title: req.body.title,
+    body: req.body.body
+  };
+
+  db.Note.create(payload)
+    .then(function (dbNote) {
+      // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
+      // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
+      // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
+      return db.Article.findOneAndUpdate(
+        { _id: id },
+        { note: dbNote._id },
+        { new: true }
+      );
+    })
+    .then(function (dbArticle) {
+      // If we were able to successfully update an Article, send it back to the client
+      res.json(dbArticle);
+    })
+    .catch(function (err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+
+  // db.Article.updateOne({ _id: id }, { $push: { Note: payload } })
+  //   .then(function (dbArticle) {
+  //     console.log('success');
+  //     console.log(dbArticle);
+  //   })
+  //   .catch(function (err) {
+  //     console.log(err);
+  //   });
+
+  // db.Article.findOne({ _id: id })
+  //   .populate('note')
+  //   .exec((err, payload) => {
+  //     payload;
+  //     console.log('Populated Note ' + payload);
+  //   });
+
+  // db.Note.create(payload)
+  //   .then(function () {})
+  //   .catch(function (err) {
+  //     console.log(err);
+  //   });
 });
 
 module.exports = router;
