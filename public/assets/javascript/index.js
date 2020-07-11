@@ -22,10 +22,13 @@ $(document).ready(function () {
 
   function renderArticles(articles) {
     var articleCards = [];
+    var articleNoteModal = [];
     for (var i = 0; i < articles.length; i++) {
       articleCards.push(createCard(articles[i]));
+      articleCards.push(createNoteModal(articles[i]));
     }
     articleContainer.append(articleCards);
+    articleContainer.append(articleNoteModal);
   }
 
   function createCard(article) {
@@ -38,6 +41,10 @@ $(document).ready(function () {
           )
             .attr('href', article.link)
             .text(article.title),
+          $('<a class="btn btn-info notes" data-toggle="modal">Notes</a>').attr(
+            'data-target',
+            '#' + article._id
+          ),
           $("<a class='btn btn-success save'>Save Article</a>"),
           $("<div class='card-body'>").text(article.summary)
         )
@@ -50,6 +57,9 @@ $(document).ready(function () {
           )
             .attr('href', article.link)
             .text(article.title),
+          $(
+            '<a class="btn btn-info notes" data-toggle="modal"">Notes</a>'
+          ).attr('data-targer', '#' + article._id),
           $("<a class='btn btn-success save'>Save Article</a>")
         )
       );
@@ -57,6 +67,79 @@ $(document).ready(function () {
     card.append(cardHeader);
     card.data('_id', article._id);
     return card;
+  }
+
+  function createNoteModal(article) {
+    // var modal = $(
+    //   '<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">'
+    // )
+    //   .attr('id', article._id)
+    //   .append(
+    //     $(
+    //       '<div class="modal-dialog modal-dialog-centered" role="document">'
+    //     ).append(
+    //       $('<div class="modal-content">').append(
+    //         $('<div class="modal-header">').append(
+    //           $(
+    //             '<h5 class="modal-title" id="exampleModalLongTitle">Notes</h5>'
+    //           ),
+    //           $(
+    //             '<button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>'
+    //           ).append($('<span aria-hidden="true">&times;</span>'))
+    //         ),
+    //         $('<div class="modal-body">').append(
+    //           $('<form>').append(
+    //             $('<div class="form-group">').append(
+    //               $('<label for="addNoteInput">'),
+    //               $(
+    //                 '<textarea class="form-control" id="addNoteInput" rows="3" placeholder="Add note here...">'
+    //               )
+    //             )
+    //           )
+    //         ),
+
+    //         $('<div class="modal-footer">').append(
+    //           $(
+    //             '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>'
+    //           ),
+    //           $(
+    //             '<button type="button" class="btn btn-primary add">Add Note</button>'
+    //           ).attr('id', article._id)
+    //         )
+    //       )
+    //     )
+    //   );
+    console.log(article._id);
+    const modal = $(
+      [
+        `<div class="modal fade" id=${article._id} tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">`,
+        '<div class="modal-dialog modal-dialog-centered" role="document">',
+        '<div class="modal-content">',
+        '<div class="modal-header">',
+        '<h5 class="modal-title" id="exampleModalLongTitle">Notes</h5>',
+        '<button type="button" class="close" data-dismiss="modal" aria-label="Close">',
+        '<span aria-hidden="true">&times;</span>',
+        '</button>',
+        '</div>',
+        '<div class="modal-body">',
+        '<form>',
+        ' <div class="form-group">',
+        '<label for="addNoteInput"></label>',
+        '<textarea class="form-control" id="addNoteInput" rows="3" placeholder="Add note here..."></textarea>',
+        '</div>',
+        '</form>',
+        '</div>',
+        '<div class="modal-footer">',
+        '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>',
+        `<button type="button" id=${article._id} class="btn btn-primary add">Add Note</button>`,
+        '</div>',
+        '</div>',
+        '</div>',
+        '</div>'
+      ].join('')
+    );
+    modal.data('_id', article._id);
+    return modal;
   }
 
   function renderEmpty() {

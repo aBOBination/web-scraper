@@ -100,15 +100,16 @@ body {
 
 .delete {
   position: absolute;
-  top: 12;
+  top: 12px;
   right: 12px;
 }
 
 .notes {
   position: absolute;
-  top: 30px;
-  right: 160px;
+  top: 12px;
+  right: 140px;
 }
+
 
 .card .card-body {
   font-size: 16px;

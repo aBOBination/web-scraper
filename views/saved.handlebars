@@ -36,10 +36,12 @@
       <h3>
         <a class="article-link" target="_blank" rel="noopener noreferrer" href="https://www.nytimes.com/{{link}}">{{title}}</a>
         {{!-- <span> --}}
-        <a class="btn btn-info notes" data-toggle="modal" data-target="#{{_id}}">Notes</a>
         <a class="btn btn-danger delete">Delete Article</a>
         {{!-- </span> --}}
-        <div class="card-body">{{summary}}</div>
+        {{#if summary}}
+      <div class="card-body">{{summary}}</div>
+      {{else}}
+      {{/if}}
       </h3>
     </div>
   </div>
@@ -52,34 +54,3 @@
 </div>
 
 <!-- Button trigger modal -->
-{{#if scrape}}
-{{#each scrape}}
-<!-- Modal -->
-
-<div class="modal fade" id="{{_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Notes</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="addNoteInput"></label>
-            <textarea class="form-control" id="addNoteInput" rows="3" placeholder="Add note here..."></textarea>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" id={{_id}} class="btn btn-primary add">Add Note</button>
-      </div>
-    </div>
-  </div>
-</div>
-{{/each}}
-{{else}}
-{{/if}}
