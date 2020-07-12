@@ -8,21 +8,18 @@ body {
   background-image: url("../../images/paper.png");
 }
 
-.card a:not([href]):not([tabindex]).scrape-new {
-  color: #2196F3;
-}
-
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 80px;
   color: white;
-  background-color: #2196f3;
+  background-color: lightslategrey;
 }
 
 .navbar {
   margin-bottom: 0;
+  background-color: lightslategrey;
 }
 
 .jumbotron {
@@ -83,7 +80,7 @@ body {
 }
 
 .card .card-header {
-  background-color: #2196f3;
+  background-color: lightslategrey;
   position: relative;
   padding-top: 30px;
 }
@@ -96,24 +93,38 @@ body {
   position: absolute;
   top: 12px;
   right: 12px;
+  background-color: #29ace07e;
+}
+
+.save:hover {
+  background-color: #29abe0;
 }
 
 .delete {
   position: absolute;
   top: 12px;
   right: 12px;
+  background-color: #d500007c ;
+}
+
+.delete:hover {
+  background-color: #d50000 ;
 }
 
 .notes {
   position: absolute;
   top: 12px;
   right: 140px;
+  background-color: #29ace07e;
 }
 
+.notes:hover {
+  background-color:  #29abe0;
+}
 
 .card .card-body {
   font-size: 16px;
-  background-color: #2196f3;
+  background-color: lightslategrey;
   color: white;
   margin-right: 15rem;
   padding-left: 0;
@@ -136,7 +147,7 @@ body {
   padding-left: 10px;
   margin: 0;
   font-weight: 800;
-  background: #0c7cd5;
+  background: lightslategrey;
 }
 
 .navbar-nav > li > a.scrape-new,
@@ -148,17 +159,26 @@ body {
   color: white;
 }
 
-.navbar-nav > li > a.scrape-new:hover,
-.navbar-nav > li > a.clear:hover {
-  background: #4caf50;
-}
-
-.navbar-nav > li > a.scrape-new:active {
-  background: #e51c23;
-}
-
 .scrape-new {
   cursor: pointer;
+  background-color: #29ace07e;
+  color: white
+}
+
+.scrape-new:hover {
+  background-color:  #29abe0;
+  color: white;
+}
+
+.clear {
+  background-color: #d500007c ;
+  color: white
+
+}
+
+.clear:hover {
+  background-color: #d50000 ;
+  font: white;
 }
 
 .m-top-80 {
